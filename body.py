@@ -24,6 +24,8 @@ class Body(object):
         self.jaugeFatigue = 0
         self.fatigueMin = 0
         self.fatigueMax = 0
+        self.startSleepStamp = 0
+        self.sleepDuration = 3
 
         self.jaugeReproduction = 0
         self.reproductionMin = 0
@@ -41,21 +43,27 @@ class Body(object):
 
     def update(self):
         currentTime = time.time()
-        if currentTime - self.lastTickTime > 1:
-            self.jaugeFaim += 1
-            self.jaugeFatigue += 1
-            self.jaugeReproduction += 1
-            self.lastTickTime = currentTime
 
         if currentTime - self.dateNaissance > self.esperanceVie:
             self.isDead = True
 
-        if self.isSleeping is False and self.isDead is False:
+        if currentTime - self.startSleepStamp > self.sleepDuration:
+            self.isSleeping = False
+
+        if self.isDead is False and self.isSleeping is False:
+            if currentTime - self.lastTickTime > 1:
+                self.jaugeFaim += 1
+                self.jaugeFatigue += 1
+                self.jaugeReproduction += 1
+                self.lastTickTime = currentTime
+
             if self.jaugeFaim > self.faimMax:
                 self.isDead = True
 
             if self.jaugeFatigue > self.fatigueMax and self.isDead is False:
-                self.isSleeping
+                self.isSleeping = True
+                self.jaugeFatigue = 0
+                self.startSleepStamp = time.time()
 
             if self.jaugeReproduction > self.reproductionMax and self.isDead is False and self.isSleeping is False:
                 self.isReadyToDuplicate = True
@@ -88,5 +96,16 @@ class Body(object):
             self.position.y = 0
 
     def show(self):
+        # Draw body
         core.Draw.circle(self.color, self.position, self.mass)
+
+        # Draw if Agent is dead or sleeping
+        if self.isDead is True:
+            core.Draw.text((255, 255, 255), 'Dead', Vector2(self.position.x + 5, self.position.y), 10, 'Arial')
+        elif self.isSleeping is True:
+            core.Draw.text((255, 255, 255), 'Sleep', Vector2(self.position.x + 5, self.position.y), 10, 'Arial')
+
+        # TESTING PURPOSE
+        # # #
+        # Draw perception radius
         core.Draw.circle(self.color, self.position, self.fustrum.radius, 1)

@@ -6,14 +6,14 @@ class SuperpredateurBody(Body):
         super().__init__()
 
         self.faimMin = 0
-        self.faimMax = 20
+        self.faimMax = 15
 
         self.fatigueMin = 0
-        self.fatigueMax = 25
+        self.fatigueMax = 5
 
         self.reproductionMin = 0
-        self.reproductionMax = 30
+        self.reproductionMax = 20
 
-        self.esperanceVie = 40
+        self.esperanceVie = 30
 
         self.color = (252, 3, 3)

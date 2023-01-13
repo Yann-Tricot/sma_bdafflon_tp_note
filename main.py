@@ -14,19 +14,20 @@ from superpredateurBody import SuperpredateurBody
 def setup():
     print("Setup START---------")
     core.fps = 60
-    core.WINDOW_SIZE = [900, 600]
+    core.WINDOW_SIZE = [1200, 780]
+    # core.fullscreen = True
 
     core.memory("superpredateurs", [])
     core.memory("nbSuperpredateurs", 1)
 
     core.memory("carnivores", [])
-    core.memory("nbCarnivores", 5)
+    core.memory("nbCarnivores", 1)
 
     core.memory("decomposeurs", [])
-    core.memory("nbDecomposeurs", 15)
+    core.memory("nbDecomposeurs", 0)
 
     core.memory("herbivores", [])
-    core.memory("nbHerbivores", 10)
+    core.memory("nbHerbivores", 0)
 
     core.memory("item", [])
 
@@ -122,7 +123,7 @@ def checkNaissances(superPredas, carnis, herbis, decompos):
     for decompo in decompos:
         if decompo.body.isReadyToDuplicate is True:
             newBorn = Decomposeur(DecomposeurBody())
-            # newBorn.body.position = decompo.body.position
+            newBorn.body.position = decompo.body.position
             # newBorn.body.vMax = random.randint(4, 6)
             # newBorn.body.mass = random.randint(3, 5)
             newBorn.body.faimMax = random.randint(8, 10)
@@ -133,25 +134,33 @@ def checkNaissances(superPredas, carnis, herbis, decompos):
             decompo.body.isReadyToDuplicate = False
             decompo.body.jaugeReproduction = 0
 
+def getCurrentStats(agents):
+    pass
+
+def showStatsLog(agents):
+    pass
 
 def run():
     core.cleanScreen()
+
+    if core.getKeyPressList("s"):
+        showStatsLog(core.memory("agents"))
 
     # Display
     for agent in core.memory("superpredateurs"):
         agent.body.show()
 
     for agent in core.memory("carnivores"):
-        agent.show()
+        agent.body.show()
 
     for agent in core.memory("decomposeurs"):
-        agent.show()
+        agent.body.show()
 
     for agent in core.memory("herbivores"):
-        agent.show()
+        agent.body.show()
 
     for item in core.memory("item"):
-        item.show()
+        agent.body.show()
 
     # Actions
     # superpredateurs

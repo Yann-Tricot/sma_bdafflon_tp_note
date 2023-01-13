@@ -1,7 +1,7 @@
+import time
+
 from agent import Agent
-from herbivore import Herbivore
 from herbivoreBody import HerbivoreBody
-from superpredateur import Superpredateur
 from superpredateurBody import SuperpredateurBody
 
 
@@ -12,18 +12,19 @@ class Carnivore(Agent):
         self.coefObs = 100
 
     def update(self):
+        currentTime = time.time()
         manqer, fuir = self.filtrePerception()
 
         if len(manqer) > 0:
             target = manqer[0].position - self.body.position
-            target.scale_to_length(target.length() * self.coefCreep)
             self.body.acceleration = self.body.acceleration + target
 
         if len(fuir) > 0:
             target = self.body.position - fuir[0].position
-            target.scale_to_length(1 / target.length() ** 2)
-            target.scale_to_length(target.length() * (self.coefObs + self.body.mass))
             self.body.acceleration += target
+
+        if (len(manqer) == 0 and len(fuir) == 0) and (currentTime - self.lastTickTime > 1):
+            self.randomizeMove(currentTime)
 
     def filtrePerception(self):
         manger = []

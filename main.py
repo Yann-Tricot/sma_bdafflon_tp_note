@@ -18,10 +18,10 @@ def setup():
     # core.fullscreen = True
 
     core.memory("superpredateurs", [])
-    core.memory("nbSuperpredateurs", 5)
+    core.memory("nbSuperpredateurs", 1)
 
     core.memory("carnivores", [])
-    core.memory("nbCarnivores", 20)
+    core.memory("nbCarnivores", 4)
 
     core.memory("herbivores", [])
     core.memory("nbHerbivores", 0)
@@ -154,7 +154,6 @@ def updateEnv(superPredas, carnis, herbis, decompos):
             if carni.body.isReadyToDuplicate is True:
                 pass
 
-
     for herbi in herbis:
         if herbi.body.isDead is True:
             if herbi.body.isAte is True:
@@ -163,7 +162,6 @@ def updateEnv(superPredas, carnis, herbis, decompos):
             # BIRTHS CHECK
             if herbi.body.isReadyToDuplicate is True:
                 pass
-
 
     for decompo in decompos:
         if decompo.body.isDead is True:
@@ -251,6 +249,7 @@ def run():
         applyDecision(agent)
 
     updateEnv(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                    core.memory("decomposeurs"))
+              core.memory("decomposeurs"))
+
 
 core.main(setup, run)

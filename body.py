@@ -122,4 +122,4 @@ class Body(object):
         # Draw perception radius
         core.Draw.circle(self.color, self.position, self.fustrum.radius, 1)
         # Draw kill zone
-        core.Draw.circle((255, 255, 255), self.position, self.mass + 3, 1)
+        core.Draw.circle((255, 255, 255), self.position, self.mass, 1)

@@ -1,6 +1,4 @@
-import random
-
-from pygame import Vector2
+import time
 
 from agent import Agent
 from carnivoreBody import CarnivoreBody
@@ -12,17 +10,14 @@ class Superpredateur(Agent):
         self.coefCreep = .01
 
     def update(self):
+        currentTime = time.time()
         manqer = self.filtrePerception()
 
         if len(manqer) > 0:
             target = manqer[0].position - self.body.position
-            # target.scale_to_length(target.length() * self.coefCreep)
             self.body.acceleration += target
-        else:
-            target = Vector2(random.randint(-1, 1), random.randint(-1, 1))
-            while target.length() == 0:
-                target = Vector2(random.randint(-1, 1), random.randint(-1, 1))
-            self.body.acceleration += target
+        elif currentTime - self.lastTickTime > 1:
+            self.randomizeMove(currentTime)
 
     def eatOtherAgent(self, ateAgent):
         ateAgent.isDead = True

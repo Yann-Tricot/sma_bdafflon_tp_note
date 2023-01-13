@@ -11,9 +11,9 @@ class Body(object):
     def __init__(self):
         self.position = Vector2(random.randint(0, core.WINDOW_SIZE[0]), random.randint(0, core.WINDOW_SIZE[1]))
         self.velocity = Vector2(random.uniform(-5, 5), random.uniform(-5, 5))
-        self.vMax = 4
+        self.vMax = 2
         self.acceleration = Vector2()
-        self.accMax = 1
+        self.accMax = 10
         self.mass = 7
         self.fustrum = Fustrum(150, self)
 
@@ -37,6 +37,7 @@ class Body(object):
 
         self.isSleeping = False
         self.isDead = False
+        self.isAte = False
 
         self.color = (0, 0, 0)
         self.lastTickTime = 0
@@ -81,6 +82,7 @@ class Body(object):
             self.velocity.scale_to_length(self.vMax)
 
         self.position += self.velocity
+        core.Draw.line((255, 255, 255), self.position, self.position + self.acceleration * 100, 2)
 
         self.acceleration = Vector2()
         self.edge()
@@ -105,7 +107,19 @@ class Body(object):
         elif self.isSleeping is True:
             core.Draw.text((255, 255, 255), 'Sleep', Vector2(self.position.x + 5, self.position.y), 10, 'Arial')
 
+        # Draw agent stats
+        if self.isDead is False:
+            core.Draw.text((255, 255, 255), 'faim: ' + str(self.jaugeFaim) + ' / ' + str(self.faimMax),
+                           Vector2(self.position.x + 5, self.position.y + 8), 13, 'Arial')
+            core.Draw.text((255, 255, 255), 'fatigue: ' + str(self.jaugeFatigue) + ' / ' + str(self.fatigueMax),
+                           Vector2(self.position.x + 5, self.position.y + 20), 13, 'Arial')
+            core.Draw.text((255, 255, 255),
+                           'reprod.: ' + str(self.jaugeReproduction) + ' / ' + str(self.reproductionMax),
+                           Vector2(self.position.x + 5, self.position.y + 32), 13, 'Arial')
+
         # TESTING PURPOSE
         # # #
         # Draw perception radius
         core.Draw.circle(self.color, self.position, self.fustrum.radius, 1)
+        # Draw kill zone
+        core.Draw.circle((255, 255, 255), self.position, self.mass + 3, 1)

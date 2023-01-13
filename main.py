@@ -18,16 +18,16 @@ def setup():
     # core.fullscreen = True
 
     core.memory("superpredateurs", [])
-    core.memory("nbSuperpredateurs", 1)
+    core.memory("nbSuperpredateurs", 5)
 
     core.memory("carnivores", [])
-    core.memory("nbCarnivores", 1)
-
-    core.memory("decomposeurs", [])
-    core.memory("nbDecomposeurs", 0)
+    core.memory("nbCarnivores", 20)
 
     core.memory("herbivores", [])
     core.memory("nbHerbivores", 0)
+
+    core.memory("decomposeurs", [])
+    core.memory("nbDecomposeurs", 0)
 
     core.memory("item", [])
 
@@ -134,11 +134,54 @@ def checkNaissances(superPredas, carnis, herbis, decompos):
             decompo.body.isReadyToDuplicate = False
             decompo.body.jaugeReproduction = 0
 
+
+def updateEnv(superPredas, carnis, herbis, decompos):
+    for superPreda in superPredas:
+        if superPreda.body.isDead is True:
+            if superPreda.body.isAte is True:
+                core.memory("superpredateurs").remove(superPreda)
+        else:
+            # BIRTHS CHECK
+            if superPreda.body.isReadyToDuplicate is True:
+                pass
+
+    for carni in carnis:
+        if carni.body.isDead is True:
+            if carni.body.isAte is True:
+                core.memory("carnivores").remove(carni)
+        else:
+            # BIRTHS CHECK
+            if carni.body.isReadyToDuplicate is True:
+                pass
+
+
+    for herbi in herbis:
+        if herbi.body.isDead is True:
+            if herbi.body.isAte is True:
+                core.memory("herbivores").remove(herbi)
+        else:
+            # BIRTHS CHECK
+            if herbi.body.isReadyToDuplicate is True:
+                pass
+
+
+    for decompo in decompos:
+        if decompo.body.isDead is True:
+            if decompo.body.isAte is True:
+                core.memory("decomposeurs").remove(decompo)
+        else:
+            # BIRTHS CHECK
+            if decompo.body.isReadyToDuplicate is True:
+                pass
+
+
 def getCurrentStats(agents):
     pass
 
+
 def showStatsLog(agents):
     pass
+
 
 def run():
     core.cleanScreen()
@@ -166,7 +209,7 @@ def run():
     # superpredateurs
     for agent in core.memory("superpredateurs"):
         computePerception(agent, core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                    core.memory("decomposeurs"))
+                          core.memory("decomposeurs"))
 
     for agent in core.memory("superpredateurs"):
         computeDecision(agent)
@@ -177,7 +220,7 @@ def run():
     # carnivores
     for agent in core.memory("carnivores"):
         computePerception(agent, core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                    core.memory("decomposeurs"))
+                          core.memory("decomposeurs"))
 
     for agent in core.memory("carnivores"):
         computeDecision(agent)
@@ -188,7 +231,7 @@ def run():
     # decomposeurs
     for agent in core.memory("decomposeurs"):
         computePerception(agent, core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                    core.memory("decomposeurs"))
+                          core.memory("decomposeurs"))
 
     for agent in core.memory("decomposeurs"):
         computeDecision(agent)
@@ -199,7 +242,7 @@ def run():
     # herbivores
     for agent in core.memory("herbivores"):
         computePerception(agent, core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                    core.memory("decomposeurs"))
+                          core.memory("decomposeurs"))
 
     for agent in core.memory("herbivores"):
         computeDecision(agent)
@@ -207,8 +250,7 @@ def run():
     for agent in core.memory("herbivores"):
         applyDecision(agent)
 
-    checkNaissances(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
+    updateEnv(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
                     core.memory("decomposeurs"))
-
 
 core.main(setup, run)

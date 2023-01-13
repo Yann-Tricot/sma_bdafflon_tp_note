@@ -20,11 +20,10 @@ class Carnivore(Agent):
             self.body.acceleration = self.body.acceleration + target
 
         if len(fuir) > 0:
-            print('fuit')
             target = self.body.position - fuir[0].position
             target.scale_to_length(1 / target.length() ** 2)
             target.scale_to_length(target.length() * (self.coefObs + self.body.mass))
-            self.body.acceleration = self.body.acceleration + target
+            self.body.acceleration += target
 
     def filtrePerception(self):
         manger = []

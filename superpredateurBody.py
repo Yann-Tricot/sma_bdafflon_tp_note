@@ -5,6 +5,8 @@ class SuperpredateurBody(Body):
     def __init__(self):
         super().__init__()
 
+        self.vMax = 4
+
         self.faimMin = 0
         self.faimMax = 15
 

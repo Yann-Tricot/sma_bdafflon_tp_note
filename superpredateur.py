@@ -20,12 +20,13 @@ class Superpredateur(Agent):
             self.randomizeMove(currentTime)
 
     def eatOtherAgent(self, ateAgent):
-        ateAgent.isDead = True
-        ateAgent.isAte = True
-        if self.body.faimMin > self.body.jaugeFaim - 5:
-            self.body.jaugeFaim = self.body.faimMin
-        else:
-            self.body.jaugeFaim -= 5
+        if self.body.isDead is False and self.body.isSleeping is False:
+            ateAgent.isDead = True
+            ateAgent.isAte = True
+            if self.body.faimMin > self.body.jaugeFaim - 5:
+                self.body.jaugeFaim = self.body.faimMin
+            else:
+                self.body.jaugeFaim -= 5
 
     def filtrePerception(self):
         manger = []

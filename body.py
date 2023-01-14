@@ -38,6 +38,7 @@ class Body(object):
         self.isSleeping = False
         self.isDead = False
         self.isAte = False
+        self.becomesVegetal = False
 
         self.color = (0, 0, 0)
         self.lastTickTime = 0

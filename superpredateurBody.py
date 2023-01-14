@@ -8,7 +8,7 @@ class SuperpredateurBody(Body):
         self.vMax = 4
 
         self.faimMin = 0
-        self.faimMax = 15
+        self.faimMax = 1
 
         self.fatigueMin = 0
         self.fatigueMax = 5

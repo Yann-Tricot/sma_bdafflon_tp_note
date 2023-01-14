@@ -5,6 +5,8 @@ class CarnivoreBody(Body):
     def __init__(self):
         super().__init__()
 
+        self.vMax = 3
+
         self.faimMin = 0
         self.faimMax = 13
 

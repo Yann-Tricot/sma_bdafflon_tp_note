@@ -26,6 +26,15 @@ class Carnivore(Agent):
         if (len(manqer) == 0 and len(fuir) == 0) and (currentTime - self.lastTickTime > 1):
             self.randomizeMove(currentTime)
 
+    def eatOtherAgent(self, ateAgent):
+        if self.body.isDead is False and self.body.isSleeping is False:
+            ateAgent.isDead = True
+            ateAgent.isAte = True
+            if self.body.faimMin > self.body.jaugeFaim - 5:
+                self.body.jaugeFaim = self.body.faimMin
+            else:
+                self.body.jaugeFaim -= 5
+
     def filtrePerception(self):
         manger = []
         fuir = []
@@ -34,7 +43,9 @@ class Carnivore(Agent):
             i.dist = self.body.position.distance_to(i.position)
             if isinstance(i, HerbivoreBody) and i.isDead is False:
                 manger.append(i)
-            elif isinstance(i, SuperpredateurBody) and i.isDead is False:
+                if self.otherAgentInKillZone(i) is True:
+                    self.eatOtherAgent(i)
+            elif isinstance(i, SuperpredateurBody) and (i.isDead is False and i.isSleeping is False):
                 fuir.append(i)
 
         manger.sort(key=lambda x: x.dist, reverse=False)

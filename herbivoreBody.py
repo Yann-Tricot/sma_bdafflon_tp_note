@@ -6,15 +6,15 @@ class HerbivoreBody(Body):
         super().__init__()
 
         self.faimMin = 0
-        self.faimMax = 5
+        self.faimMax = 10
 
         self.fatigueMin = 0
-        self.fatigueMax = 7
+        self.fatigueMax = 12
 
         self.reproductionMin = 0
-        self.reproductionMax = 12
+        self.reproductionMax = 10
 
-        self.esperanceVie = 20
+        self.esperanceVie = 35
 
         self.color = (102, 212, 103)
 

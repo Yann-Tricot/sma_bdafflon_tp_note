@@ -1,3 +1,5 @@
+import time
+
 from agent import Agent
 from carnivoreBody import CarnivoreBody
 from vegetal import Vegetal
@@ -10,19 +12,27 @@ class Herbivore(Agent):
         self.coefObs = 100
 
     def update(self):
+        currentTime = time.time()
         manqer, fuir = self.filtrePerception()
 
         if len(manqer) > 0:
             target = manqer[0].position - self.body.position
-            target.scale_to_length(target.length() * self.coefCreep)
             self.body.acceleration = self.body.acceleration + target
 
         if len(fuir) > 0:
-            print('fuit')
             target = self.body.position - fuir[0].position
-            target.scale_to_length(1 / target.length() ** 2)
-            target.scale_to_length(target.length() * (self.coefObs + self.body.mass))
-            self.body.acceleration = self.body.acceleration + target
+            self.body.acceleration += target
+
+        if (len(manqer) == 0 and len(fuir) == 0) and (currentTime - self.lastTickTime > 1):
+            self.randomizeMove(currentTime)
+
+    def eatOtherAgent(self, ateVegetal):
+        if self.body.isDead is False and self.body.isSleeping is False:
+            ateVegetal.isAte = True
+            if self.body.faimMin > self.body.jaugeFaim - 5:
+                self.body.jaugeFaim = self.body.faimMin
+            else:
+                self.body.jaugeFaim -= 5
 
     def filtrePerception(self):
         manger = []
@@ -30,9 +40,11 @@ class Herbivore(Agent):
 
         for i in self.body.fustrum.perceptionList:
             i.dist = self.body.position.distance_to(i.position)
-            if isinstance(i, Vegetal) and i.isDead is False:
+            if isinstance(i, Vegetal):
                 manger.append(i)
-            elif isinstance(i, CarnivoreBody) and i.isDead is False:
+                if self.otherAgentInKillZone(i) is True:
+                    self.eatOtherAgent(i)
+            elif isinstance(i, CarnivoreBody) and (i.isDead is False and i.isSleeping is False):
                 fuir.append(i)
 
         manger.sort(key=lambda x: x.dist, reverse=False)

@@ -9,11 +9,11 @@ class DecomposeurBody(Body):
         self.faimMax = 20
 
         self.fatigueMin = 0
-        self.fatigueMax = 20
+        self.fatigueMax = 25
 
         self.reproductionMin = 0
-        self.reproductionMax = 4
+        self.reproductionMax = 10
 
-        self.esperanceVie = 20
+        self.esperanceVie = 25
 
         self.color = (145, 145, 145)

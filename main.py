@@ -1,5 +1,6 @@
 import random
 
+import pygame
 from pygame import Vector2
 
 import core
@@ -17,23 +18,22 @@ from vegetal import Vegetal
 def setup():
     print("Setup START---------")
     core.fps = 60
-    core.WINDOW_SIZE = [1200, 780]
-    # core.fullscreen = True
+    core.WINDOW_SIZE = [1280, 1024]
 
     core.memory("superpredateurs", [])
-    core.memory("nbSuperpredateurs", 3)
+    core.memory("nbSuperpredateurs", 1)
 
     core.memory("carnivores", [])
-    core.memory("nbCarnivores", 6)
+    core.memory("nbCarnivores", 1)
 
     core.memory("herbivores", [])
-    core.memory("nbHerbivores", 12)
+    core.memory("nbHerbivores", 5)
 
     core.memory("decomposeurs", [])
-    core.memory("nbDecomposeurs", 5)
+    core.memory("nbDecomposeurs", 0)
 
     core.memory("vegetals", [])
-    core.memory("nbVegetals", 10)
+    core.memory("nbVegetals", 0)
 
     for i in range(0, core.memory("nbSuperpredateurs")):
         core.memory("superpredateurs").append(Superpredateur(SuperpredateurBody()))
@@ -200,19 +200,145 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
             core.memory("vegetals").remove(vegetal)
 
 
-def getCurrentStats(agents):
-    pass
+def getCurrentStats(superPredas, carnis, herbis, decompos):
+    if len(superPredas) > 0:
+        bestSuperpreda = superPredas[0]
+    else:
+        bestSuperpreda = None
+    percSuperpredas = 0
+
+    if len(carnis) > 0:
+        bestCarni = carnis[0]
+    else:
+        bestCarni = None
+    percCarnis = 0
+
+    if len(herbis) > 0:
+        bestHerbi = herbis[0]
+    else:
+        bestHerbi = None
+    percHerbis = 0
+
+    if len(decompos) > 0:
+        bestDecompo = decompos[0]
+    else:
+        bestDecompo = None
+    percDecompos = 0
+
+    for superPreda in superPredas:
+        percSuperpredas += 1
+        if superPreda.body.isDead is False:
+            if superPreda.body.vMax >= bestSuperpreda.body.vMax and \
+                    superPreda.body.faimMax >= bestSuperpreda.body.faimMax and \
+                    superPreda.body.fatigueMax >= bestSuperpreda.body.fatigueMax and \
+                    superPreda.body.mass >= bestSuperpreda.body.mass and \
+                    superPreda.body.esperanceVie >= bestSuperpreda.body.esperanceVie:
+                bestSuperpreda = superPreda
+
+    for carni in carnis:
+        percCarnis += 1
+        if carni.body.isDead is False:
+            if carni.body.vMax >= bestCarni.body.vMax and \
+                    carni.body.faimMax >= bestCarni.body.faimMax and \
+                    carni.body.fatigueMax >= bestCarni.body.fatigueMax and \
+                    carni.body.mass >= bestCarni.body.mass and \
+                    carni.body.esperanceVie >= bestCarni.body.esperanceVie:
+                bestSuperpreda = carni
+
+    for herbi in herbis:
+        percHerbis += 1
+        if herbi.body.isDead is False:
+            if herbi.body.vMax >= bestHerbi.body.vMax and \
+                    herbi.body.faimMax >= bestHerbi.body.faimMax and \
+                    herbi.body.fatigueMax >= bestHerbi.body.fatigueMax and \
+                    herbi.body.mass >= bestHerbi.body.mass and \
+                    herbi.body.esperanceVie >= bestHerbi.body.esperanceVie:
+                bestSuperpreda = herbi
+
+    for decompo in decompos:
+        percDecompos += 1
+        if decompo.body.isDead is False:
+            if decompo.body.vMax >= bestDecompo.body.vMax and \
+                    decompo.body.faimMax >= bestDecompo.body.faimMax and \
+                    decompo.body.fatigueMax >= bestDecompo.body.fatigueMax and \
+                    decompo.body.mass >= bestDecompo.body.mass and \
+                    decompo.body.esperanceVie >= bestDecompo.body.esperanceVie:
+                bestSuperpreda = decompo
+
+    totAgents = percSuperpredas + percCarnis + percHerbis + percDecompos
+    percSuperpredas = (percSuperpredas * 100) / totAgents
+    percCarnis = (percCarnis * 100) / totAgents
+    percHerbis = (percHerbis * 100) / totAgents
+    percDecompos = (percDecompos * 100) / totAgents
+
+    return totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, bestDecompo, \
+        percDecompos
 
 
-def showStatsLog(agents):
-    pass
+def showStatsLog(superPredas, carnis, herbis, decompos):
+    totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, bestDecompo, \
+        percDecompos = getCurrentStats(superPredas, carnis, herbis, decompos)
+
+    print('SIMULATION STATISTICS')
+    print('- - - - - - - - - - -')
+    print('| tot. pop. : ' + str(totAgents) + 'agents')
+    print('| superpredateurs : ', "%.2f" % percSuperpredas + '%')
+    print('| carnivores : ', "%.2f" % percCarnis + '%')
+    print('| herbivores : ', "%.2f" % percHerbis + '%')
+    print('| decomposeurs : ', "%.2f" % percDecompos + '%')
+    print('- - - - - - - - - - -')
+
+    if bestSuperpreda is not None:
+        print('| Best superpredateur : ', str(bestSuperpreda.uuid))
+        print('| Stats --> : ',
+              'vMax: ' + str(bestSuperpreda.body.vMax) + ' | ',
+              'faimMax: ' + str(bestSuperpreda.body.faimMax) + ' | ',
+              'fatigueMax: ' + str(bestSuperpreda.body.fatigueMax) + ' | ',
+              'mass: ' + str(bestSuperpreda.body.mass) + ' | ',
+              'esperanceVie: ' + str(bestSuperpreda.body.esperanceVie))
+        print('|')
+
+    if bestCarni is not None:
+        print('| Best carnivore : ', str(bestCarni.uuid))
+        print('| Stats --> : ',
+              'vMax: ' + str(bestCarni.body.vMax) + ' | ',
+              'faimMax: ' + str(bestCarni.body.faimMax) + ' | ',
+              'fatigueMax: ' + str(bestCarni.body.fatigueMax) + ' | ',
+              'mass: ' + str(bestCarni.body.mass) + ' | ',
+              'esperanceVie: ' + str(bestCarni.body.esperanceVie))
+        print('|')
+
+    if bestHerbi is not None:
+        print('| Best herbivore : ', str(bestHerbi.uuid))
+        print('| Stats --> : ',
+              'vMax: ' + str(bestHerbi.body.vMax) + ' | ',
+              'faimMax: ' + str(bestHerbi.body.faimMax) + ' | ',
+              'fatigueMax: ' + str(bestHerbi.body.fatigueMax) + ' | ',
+              'mass: ' + str(bestHerbi.body.mass) + ' | ',
+              'esperanceVie: ' + str(bestHerbi.body.esperanceVie))
+        print('|')
+
+    if bestDecompo is not None:
+        print('| Best decomposeur : ', str(bestDecompo.uuid))
+        print('| Stats --> : ',
+              'vMax: ' + str(bestDecompo.body.vMax) + ' | ',
+              'faimMax: ' + str(bestDecompo.body.faimMax) + ' | ',
+              'fatigueMax: ' + str(bestDecompo.body.fatigueMax) + ' | ',
+              'mass: ' + str(bestDecompo.body.mass) + ' | ',
+              'esperanceVie: ' + str(bestDecompo.body.esperanceVie))
+        print('|')
+    print('- - - - - - - - - - -')
 
 
 def run():
     core.cleanScreen()
 
     if core.getKeyPressList("s"):
-        showStatsLog(core.memory("agents"))
+        showStatsLog(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
+                          core.memory("decomposeurs"))
+
+    if core.getKeyPressList("ESCAPE"):
+        pygame.quit()
 
     # Display
     for agent in core.memory("superpredateurs"):

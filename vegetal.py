@@ -6,9 +6,9 @@ import core
 
 
 class Vegetal(object):
-    def __init__(self):
+    def __init__(self, g_mass):
         self.position = Vector2(random.randint(0, core.WINDOW_SIZE[0]), random.randint(0, core.WINDOW_SIZE[1]))
-        self.mass = random.randint(2, 5)
+        self.mass = g_mass
         self.isAte = False
         self.becomesVegetal = False
         self.color = (216, 235, 91)

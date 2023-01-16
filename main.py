@@ -1,3 +1,4 @@
+import json
 import random
 
 import pygame
@@ -20,35 +21,79 @@ def setup():
     core.fps = 60
     core.WINDOW_SIZE = [1280, 1024]
 
+    scenarioConfigFile = open('scenario.json')
+    scenarioConfigData = json.load(scenarioConfigFile)
+    scenarioConfigFile.close()
+
+    dureeSimu = scenarioConfigData['dureeSimu']
+    suppredasData = scenarioConfigData['SuperPredateur']
+    carnisData = scenarioConfigData['Carnivores']
+    herbisData = scenarioConfigData['Herbivore']
+    decomposData = scenarioConfigData['Decomposeur']
+    vegetalsData = scenarioConfigData['Vegetal']
+
     core.memory("superpredateurs", [])
-    core.memory("nbSuperpredateurs", 1)
+    core.memory("nbSuperpredateurs", suppredasData['nb'])
 
     core.memory("carnivores", [])
-    core.memory("nbCarnivores", 1)
+    core.memory("nbCarnivores", carnisData['nb'])
 
     core.memory("herbivores", [])
-    core.memory("nbHerbivores", 5)
+    core.memory("nbHerbivores", herbisData['nb'])
 
     core.memory("decomposeurs", [])
-    core.memory("nbDecomposeurs", 0)
+    core.memory("nbDecomposeurs", decomposData['nb'])
 
     core.memory("vegetals", [])
-    core.memory("nbVegetals", 0)
+    core.memory("nbVegetals", vegetalsData['nb'])
 
     for i in range(0, core.memory("nbSuperpredateurs")):
-        core.memory("superpredateurs").append(Superpredateur(SuperpredateurBody()))
+        core.memory("superpredateurs").append(Superpredateur(SuperpredateurBody(
+            random.randint(suppredasData['parametres']['vitesseMax'][0], suppredasData['parametres']['vitesseMax'][1]),
+            random.randint(suppredasData['parametres']['accelerationMax'][0], suppredasData['parametres']['accelerationMax'][1]),
+            random.randint(suppredasData['parametres']['massMax'][0], suppredasData['parametres']['massMax'][1]),
+            random.randint(suppredasData['parametres']['MaxFaim'][0], suppredasData['parametres']['MaxFaim'][1]),
+            random.randint(suppredasData['parametres']['MaxFatigue'][0], suppredasData['parametres']['MaxFatigue'][1]),
+            random.randint(suppredasData['parametres']['MaxReproduction'][0], suppredasData['parametres']['MaxReproduction'][1]),
+            random.randint(suppredasData['parametres']['MaxVie'][0], suppredasData['parametres']['MaxVie'][1])
+        )))
 
     for i in range(0, core.memory("nbCarnivores")):
-        core.memory("carnivores").append(Carnivore(CarnivoreBody()))
+        core.memory("carnivores").append(Carnivore(CarnivoreBody(
+            random.randint(carnisData['parametres']['vitesseMax'][0], carnisData['parametres']['vitesseMax'][1]),
+            random.randint(carnisData['parametres']['accelerationMax'][0], carnisData['parametres']['accelerationMax'][1]),
+            random.randint(carnisData['parametres']['massMax'][0], carnisData['parametres']['massMax'][1]),
+            random.randint(carnisData['parametres']['MaxFaim'][0], carnisData['parametres']['MaxFaim'][1]),
+            random.randint(carnisData['parametres']['MaxFatigue'][0], carnisData['parametres']['MaxFatigue'][1]),
+            random.randint(carnisData['parametres']['MaxReproduction'][0], carnisData['parametres']['MaxReproduction'][1]),
+            random.randint(carnisData['parametres']['MaxVie'][0], carnisData['parametres']['MaxVie'][1])
+        )))
 
     for i in range(0, core.memory("nbDecomposeurs")):
-        core.memory("decomposeurs").append(Decomposeur(DecomposeurBody()))
+        core.memory("decomposeurs").append(Decomposeur(DecomposeurBody(
+            random.randint(herbisData['parametres']['vitesseMax'][0], herbisData['parametres']['vitesseMax'][1]),
+            random.randint(herbisData['parametres']['accelerationMax'][0], herbisData['parametres']['accelerationMax'][1]),
+            random.randint(herbisData['parametres']['massMax'][0], herbisData['parametres']['massMax'][1]),
+            random.randint(herbisData['parametres']['MaxFaim'][0], herbisData['parametres']['MaxFaim'][1]),
+            random.randint(herbisData['parametres']['MaxFatigue'][0], herbisData['parametres']['MaxFatigue'][1]),
+            random.randint(herbisData['parametres']['MaxReproduction'][0], herbisData['parametres']['MaxReproduction'][1]),
+            random.randint(herbisData['parametres']['MaxVie'][0], herbisData['parametres']['MaxVie'][1])
+        )))
 
     for i in range(0, core.memory("nbHerbivores")):
-        core.memory("herbivores").append(Herbivore(HerbivoreBody()))
+        core.memory("herbivores").append(Herbivore(HerbivoreBody(
+            random.randint(decomposData['parametres']['vitesseMax'][0], decomposData['parametres']['vitesseMax'][1]),
+            random.randint(decomposData['parametres']['accelerationMax'][0], decomposData['parametres']['accelerationMax'][1]),
+            random.randint(decomposData['parametres']['massMax'][0], decomposData['parametres']['massMax'][1]),
+            random.randint(decomposData['parametres']['MaxFaim'][0], decomposData['parametres']['MaxFaim'][1]),
+            random.randint(decomposData['parametres']['MaxFatigue'][0], decomposData['parametres']['MaxFatigue'][1]),
+            random.randint(decomposData['parametres']['MaxReproduction'][0], decomposData['parametres']['MaxReproduction'][1]),
+            random.randint(decomposData['parametres']['MaxVie'][0], decomposData['parametres']['MaxVie'][1])
+        )))
 
     for i in range(0, core.memory("nbVegetals")):
-        core.memory("vegetals").append(Vegetal())
+        core.memory("vegetals").append(Vegetal(random.randint(vegetalsData['parametres']['massMax'][0],
+                                                              vegetalsData['parametres']['massMax'][1])))
 
     print("Setup END-----------")
 

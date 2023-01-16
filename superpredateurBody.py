@@ -2,20 +2,16 @@ from body import Body
 
 
 class SuperpredateurBody(Body):
-    def __init__(self):
+    def __init__(self, g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax):
         super().__init__()
 
-        self.vMax = 4
+        self.vMax = g_vMax
+        self.accMax = g_accMax
+        self.mass = g_mass
 
-        self.faimMin = 0
-        self.faimMax = 1
-
-        self.fatigueMin = 0
-        self.fatigueMax = 5
-
-        self.reproductionMin = 0
-        self.reproductionMax = 20
-
-        self.esperanceVie = 30
+        self.faimMax = g_faimMax
+        self.fatigueMax = g_fatigueMax
+        self.reproductionMax = g_reproMax
+        self.esperanceVie = g_vieMax
 
         self.color = (252, 3, 3)

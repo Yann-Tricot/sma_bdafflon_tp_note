@@ -2,20 +2,16 @@ from body import Body
 
 
 class CarnivoreBody(Body):
-    def __init__(self):
+    def __init__(self, g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax):
         super().__init__()
 
-        self.vMax = 3
+        self.vMax = g_vMax
+        self.accMax = g_accMax
+        self.mass = g_mass
 
-        self.faimMin = 0
-        self.faimMax = 13
-
-        self.fatigueMin = 0
-        self.fatigueMax = 7
-
-        self.reproductionMin = 0
-        self.reproductionMax = 15
-
-        self.esperanceVie = 35
+        self.faimMax = g_faimMax
+        self.fatigueMax = g_fatigueMax
+        self.reproductionMax = g_reproMax
+        self.esperanceVie = g_vieMax
 
         self.color = (252, 111, 3)

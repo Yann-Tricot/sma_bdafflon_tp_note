@@ -1,0 +1,144 @@
+{
+  "dureeSimu": 600,
+  "SuperPredateur": {
+    "nb": 12,
+    "parametres": {
+      "vitesseMax": [
+        3,
+        6
+      ],
+      "accelerationMax": [
+        8,
+        12
+      ],
+      "massMax": [
+        10,
+        12
+      ],
+      "MaxFaim": [
+        20,
+        25
+      ],
+      "MaxFatigue": [
+        10,
+        15
+      ],
+      "MaxReproduction": [
+        15,
+        20
+      ],
+      "MaxVie": [
+        20,
+        30
+      ]
+    }
+  },
+   "Carnivores": {
+      "nb": 8,
+      "parametres": {
+         "vitesseMax": [
+            4,
+            7
+         ],
+         "accelerationMax": [
+            10,
+            13
+         ],
+         "massMax": [
+            6,
+            9
+         ],
+         "MaxFaim": [
+            25,
+            30
+         ],
+         "MaxFatigue": [
+            15,
+            20
+         ],
+         "MaxReproduction": [
+            12,
+            18
+         ],
+         "MaxVie": [
+            15,
+            25
+         ]
+      }
+   },
+   "Herbivore": {
+      "nb": 6,
+      "parametres": {
+         "vitesseMax": [
+            5,
+            8
+         ],
+         "accelerationMax": [
+            12,
+            16
+         ],
+         "massMax": [
+            4,
+            6
+         ],
+         "MaxFaim": [
+            30,
+            35
+         ],
+         "MaxFatigue": [
+            20,
+            25
+         ],
+         "MaxReproduction": [
+            10,
+            15
+         ],
+         "MaxVie": [
+            12,
+            20
+         ]
+      }
+   },
+   "Decomposeur": {
+      "nb": 6,
+      "parametres": {
+         "vitesseMax": [
+            2,
+            4
+         ],
+         "accelerationMax": [
+            3,
+            5
+         ],
+         "massMax": [
+            1,
+            3
+         ],
+         "MaxFaim": [
+            25,
+            40
+         ],
+         "MaxFatigue": [
+            30,
+            35
+         ],
+         "MaxReproduction": [
+            10,
+            15
+         ],
+         "MaxVie": [
+            13,
+            20
+         ]
+      }
+   },
+   "Vegetal": {
+      "nb": 15,
+      "parametres": {
+         "massMax": [
+            2,
+            5
+         ]
+      }
+   }
+}

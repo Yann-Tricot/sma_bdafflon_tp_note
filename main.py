@@ -292,7 +292,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
                     carni.body.fatigueMax >= bestCarni.body.fatigueMax and \
                     carni.body.mass >= bestCarni.body.mass and \
                     carni.body.esperanceVie >= bestCarni.body.esperanceVie:
-                bestSuperpreda = carni
+                bestCarni = carni
 
     for herbi in herbis:
         percHerbis += 1
@@ -302,7 +302,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
                     herbi.body.fatigueMax >= bestHerbi.body.fatigueMax and \
                     herbi.body.mass >= bestHerbi.body.mass and \
                     herbi.body.esperanceVie >= bestHerbi.body.esperanceVie:
-                bestSuperpreda = herbi
+                bestHerbi = herbi
 
     for decompo in decompos:
         percDecompos += 1
@@ -312,7 +312,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
                     decompo.body.fatigueMax >= bestDecompo.body.fatigueMax and \
                     decompo.body.mass >= bestDecompo.body.mass and \
                     decompo.body.esperanceVie >= bestDecompo.body.esperanceVie:
-                bestSuperpreda = decompo
+                bestDecompo = decompo
 
     totAgents = percSuperpredas + percCarnis + percHerbis + percDecompos
     percSuperpredas = (percSuperpredas * 100) / totAgents

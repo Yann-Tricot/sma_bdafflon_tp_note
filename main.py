@@ -21,6 +21,8 @@ def setup():
     core.fps = 60
     core.WINDOW_SIZE = [1280, 1024]
 
+    # # #
+    # Load 'scenario.json' file and extract data
     scenarioConfigFile = open('scenario.json')
     scenarioConfigData = json.load(scenarioConfigFile)
     scenarioConfigFile.close()
@@ -47,6 +49,8 @@ def setup():
     core.memory("vegetals", [])
     core.memory("nbVegetals", vegetalsData['nb'])
 
+    # # #
+    # Species initialization according 'scenario.json' file content (randomize stats)
     for i in range(0, core.memory("nbSuperpredateurs")):
         core.memory("superpredateurs").append(Superpredateur(SuperpredateurBody(
             random.randint(suppredasData['parametres']['vitesseMax'][0], suppredasData['parametres']['vitesseMax'][1]),
@@ -198,7 +202,7 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
                 if superPreda.body.becomesVegetal is True:
                     # newVegetal = Vegetal()
                     # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
-                    core.memory("vegetals").append(Vegetal())
+                    core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
                 core.memory("superpredateurs").remove(superPreda)
         else:
             # BIRTHS CHECK
@@ -211,7 +215,7 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
                 if carni.body.becomesVegetal is True:
                     # newVegetal = Vegetal()
                     # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
-                    core.memory("vegetals").append(Vegetal())
+                    core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
                 core.memory("carnivores").remove(carni)
         else:
             # BIRTHS CHECK
@@ -224,7 +228,7 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
                 if herbi.body.becomesVegetal is True:
                     # newVegetal = Vegetal()
                     # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
-                    core.memory("vegetals").append(Vegetal())
+                    core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
                 core.memory("herbivores").remove(herbi)
         else:
             # BIRTHS CHECK

@@ -1,7 +1,7 @@
 {
   "dureeSimu": 600,
   "SuperPredateur": {
-    "nb": 12,
+    "nb": 8,
     "parametres": {
       "vitesseMax": [
         3,
@@ -34,7 +34,7 @@
     }
   },
    "Carnivores": {
-      "nb": 8,
+      "nb": 4,
       "parametres": {
          "vitesseMax": [
             4,
@@ -100,7 +100,7 @@
       }
    },
    "Decomposeur": {
-      "nb": 6,
+      "nb": 2,
       "parametres": {
          "vitesseMax": [
             2,

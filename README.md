@@ -1,17 +1,17 @@
 # SMA - TP NOTE > Vivarium
 ___
 >**cours - SMA**
-</br>
-**prof. - M. Baudoin Dafflon**
-</br>
-**période - Janvier 2023**
+
+>**prof. - M. Baudoin Dafflon**
+
+>**période - Janvier 2023**
 
 ![Alt Text](./simulation_example.gif)
 
 ## Setup
 ___
 Pour setup correctement le projet vous pourrez utiliser le fichier 
-<span style="color:#6495ED">_"requirements.txt"_</span> mis à disposition avec toutes les dépendances nécéssaires.
+``"requirements.txt"`` mis à disposition avec toutes les dépendances nécéssaires.
 
 ```bash
 python -m venv venv 
@@ -24,8 +24,6 @@ Pour lancer le projet vous pouvez utiliser la commande ``py .\main.py`` dans un 
 ___
 - Touche **"S"** : 
 </br>``Affiche les stats globales actuelles de la simulation dans la console. (tot. pop; pourcentages par espèces; et le meilleur individus par espèces)``
-</br>
-</br>
 - Touche **"Echap"** : 
 </br>``Permet de quitter la simulation. (arrêt du programme et graphe dynamique)``
 
@@ -36,7 +34,7 @@ ___
 ![img.png](img.png)
 
 ### Affichage stats 
-Dans le fichier <span style="color:#6495ED">_"body.py"_</span> situé dans <span style="color:#6495ED">./Bodies/body.py</span> vous trouverez la **fonction show** (code ci-dessous), vous pourrez commenter/dé-commenter les afficchages souhaités.
+Dans le fichier ``"body.py"`` situé dans ``./Bodies/body.py`` vous trouverez la **fonction show** (code ci-dessous), vous pourrez commenter/dé-commenter les afficchages souhaités.
 ```python
     def show(self):
         # Draw body

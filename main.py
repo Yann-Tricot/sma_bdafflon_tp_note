@@ -113,8 +113,7 @@ def setup():
         core.memory("vegetals").append(Vegetal(random.randint(vegetalsData['parametres']['massMax'][0],
                                                               vegetalsData['parametres']['massMax'][1])))
 
-    plotThread = threading.Thread(target=draw_graph, args=())
-    plotThread.start()
+    plotThread = threading.Thread(target=draw_graph, args=()).start()
     print("Setup END-----------")
 
 
@@ -348,7 +347,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
     dataStats = {'SUPER_PREDATEUR': totSuperpredas,
                  'CARNIVORE': totCarnis,
                  'HERBIVORE': totHerbis,
-                 'DECOMPOSITEUR': totDecompos
+                 'DECOMPOSEUR': totDecompos
                  }
 
     totAgents = percSuperpredas + percCarnis + percHerbis + percDecompos
@@ -417,7 +416,7 @@ def showStatsLog(superPredas, carnis, herbis, decompos):
 
 
 history_time = []
-history_data = {"SUPER_PREDATEUR": [], "CARNIVORE": [], "HERBIVORE": [], "DECOMPOSITEUR": []}
+history_data = {"SUPER_PREDATEUR": [], "CARNIVORE": [], "HERBIVORE": [], "DECOMPOSEUR": []}
 
 
 def draw_graph():
@@ -440,7 +439,7 @@ def draw_graph():
                 plt.plot(history_time, history_data[key], 'orange', label=key)
             elif key == "HERBIVORE":
                 plt.plot(history_time, history_data[key], 'green', label=key)
-            elif key == "DECOMPOSITEUR":
+            elif key == "DECOMPOSEUR":
                 plt.plot(history_time, history_data[key], 'gray', label=key)
 
         plt.xlabel('Time (sec.)')
@@ -448,8 +447,7 @@ def draw_graph():
         plt.legend(loc="lower left")
         plt.title("Evolution amount of specimen by time")
         plt.draw()
-        plt.show()
-        plt.pause(0.001)
+        plt.pause(0.1)
 
 
 def stopExecution():

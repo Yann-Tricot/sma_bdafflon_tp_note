@@ -16,7 +16,7 @@ from Bodies.carnivoreBody import CarnivoreBody
 from Bodies.decomposeurBody import DecomposeurBody
 from Bodies.herbivoreBody import HerbivoreBody
 from Bodies.superpredateurBody import SuperpredateurBody
-from vegetal import Vegetal
+from Items.vegetal import Vegetal
 
 
 def setup():
@@ -457,7 +457,7 @@ def stopExecution():
         print('Session duration: ' + str(int(time.time() - core.memory("timer"))) + '/' + str(core.memory('dureeSimu')))
         core.memory("lastTickTime", time.time())
     if time.time() - core.memory("timer") > float(core.memory('dureeSimu')):
-        exit()
+        pygame.quit()
 
 
 def run():

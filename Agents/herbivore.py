@@ -3,7 +3,7 @@ import time
 from Agents.agent import Agent
 from Bodies.carnivoreBody import CarnivoreBody
 from Bodies.superpredateurBody import SuperpredateurBody
-from vegetal import Vegetal
+from Items.vegetal import Vegetal
 
 
 class Herbivore(Agent):

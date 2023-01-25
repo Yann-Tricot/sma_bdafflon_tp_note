@@ -1,10 +1,10 @@
 # SMA - TP NOTE > Vivarium
 ___
->**<span style="color:#6495ED">cours - SMA</span>**
+>**cours - SMA**
 </br>
-**<span style="color:#6495ED">prof. - M. Baudoin Dafflon</span>**
+**prof. - M. Baudoin Dafflon**
 </br>
-**<span style="color:#6495ED">période - Janvier 2023</span>**
+**période - Janvier 2023**
 
 ![Alt Text](./simulation_example.gif)
 
@@ -33,11 +33,7 @@ ___
 ___
 
 ### Couleurs Agents & Item
-- <span style="color:red">Super-Prédateurs</span>.
-- <span style="color:orange">Carnivores</span>
-- <span style="color:green">Herbivores</span>
-- <span style="color:gray">Decomposeurs</span>
-- <span style="color:yellow">Vegetals</span>
+![img.png](img.png)
 
 ### Affichage stats 
 Dans le fichier <span style="color:#6495ED">_"body.py"_</span> situé dans <span style="color:#6495ED">./Bodies/body.py</span> vous trouverez la **fonction show** (code ci-dessous), vous pourrez commenter/dé-commenter les afficchages souhaités.

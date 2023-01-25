@@ -1,8 +1,10 @@
 import json
 import random
+import threading
 import time
 
 import pygame
+from matplotlib import pyplot as plt
 from pygame import Vector2
 
 import core
@@ -111,8 +113,8 @@ def setup():
         core.memory("vegetals").append(Vegetal(random.randint(vegetalsData['parametres']['massMax'][0],
                                                               vegetalsData['parametres']['massMax'][1])))
 
-    # plotThread = threading.Thread(target=drawEvolution, args=())
-    # plotThread.start()
+    plotThread = threading.Thread(target=draw_graph, args=())
+    plotThread.start()
     print("Setup END-----------")
 
 
@@ -202,7 +204,8 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
                 if g_vieMax <= 0:
                     g_vieMax = carni.body.esperanceVie
 
-                newBorn = Carnivore(CarnivoreBody(g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax))
+                newBorn = Carnivore(
+                    CarnivoreBody(g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax))
                 newBorn.body.position = carni.body.position + Vector2(random.randint(-1, 1), random.randint(-1, 1))
 
                 core.memory('carnivores').append(newBorn)
@@ -275,28 +278,33 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
     else:
         bestSuperpreda = None
     percSuperpredas = 0
+    totSuperpredas = 0
 
     if len(carnis) > 0:
         bestCarni = carnis[0]
     else:
         bestCarni = None
     percCarnis = 0
+    totCarnis = 0
 
     if len(herbis) > 0:
         bestHerbi = herbis[0]
     else:
         bestHerbi = None
     percHerbis = 0
+    totHerbis = 0
 
     if len(decompos) > 0:
         bestDecompo = decompos[0]
     else:
         bestDecompo = None
     percDecompos = 0
+    totDecompos = 0
 
     for superPreda in superPredas:
         percSuperpredas += 1
         if superPreda.body.isDead is False:
+            totSuperpredas += 1
             if superPreda.body.vMax >= bestSuperpreda.body.vMax and \
                     superPreda.body.faimMax >= bestSuperpreda.body.faimMax and \
                     superPreda.body.fatigueMax >= bestSuperpreda.body.fatigueMax and \
@@ -307,6 +315,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
     for carni in carnis:
         percCarnis += 1
         if carni.body.isDead is False:
+            totCarnis += 1
             if carni.body.vMax >= bestCarni.body.vMax and \
                     carni.body.faimMax >= bestCarni.body.faimMax and \
                     carni.body.fatigueMax >= bestCarni.body.fatigueMax and \
@@ -317,6 +326,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
     for herbi in herbis:
         percHerbis += 1
         if herbi.body.isDead is False:
+            totHerbis += 1
             if herbi.body.vMax >= bestHerbi.body.vMax and \
                     herbi.body.faimMax >= bestHerbi.body.faimMax and \
                     herbi.body.fatigueMax >= bestHerbi.body.fatigueMax and \
@@ -327,6 +337,7 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
     for decompo in decompos:
         percDecompos += 1
         if decompo.body.isDead is False:
+            totDecompos += 1
             if decompo.body.vMax >= bestDecompo.body.vMax and \
                     decompo.body.faimMax >= bestDecompo.body.faimMax and \
                     decompo.body.fatigueMax >= bestDecompo.body.fatigueMax and \
@@ -334,18 +345,24 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
                     decompo.body.esperanceVie >= bestDecompo.body.esperanceVie:
                 bestDecompo = decompo
 
+    dataStats = {'SUPER_PREDATEUR': totSuperpredas,
+                 'CARNIVORE': totCarnis,
+                 'HERBIVORE': totHerbis,
+                 'DECOMPOSITEUR': totDecompos
+                 }
+
     totAgents = percSuperpredas + percCarnis + percHerbis + percDecompos
     percSuperpredas = (percSuperpredas * 100) / totAgents
     percCarnis = (percCarnis * 100) / totAgents
     percHerbis = (percHerbis * 100) / totAgents
     percDecompos = (percDecompos * 100) / totAgents
 
-    return totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, bestDecompo, \
-        percDecompos
+    return dataStats, totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, \
+        bestDecompo, percDecompos
 
 
 def showStatsLog(superPredas, carnis, herbis, decompos):
-    totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, bestDecompo, \
+    dataStats, totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, bestDecompo, \
         percDecompos = getCurrentStats(superPredas, carnis, herbis, decompos)
 
     print('SIMULATION STATISTICS')
@@ -399,8 +416,41 @@ def showStatsLog(superPredas, carnis, herbis, decompos):
     print('- - - - - - - - - - -')
 
 
-history_data = {"Herbivores": [], "Vegetaux": [], "Carnivores": [], "SuperPredateurs": [], "Decomposeurs": [],
-                'Morts': []}
+history_time = []
+history_data = {"SUPER_PREDATEUR": [], "CARNIVORE": [], "HERBIVORE": [], "DECOMPOSITEUR": []}
+
+
+def draw_graph():
+    while True:
+        global history_data
+        global history_time
+
+        dataStats, totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, \
+            bestDecompo, percDecompos = getCurrentStats(core.memory("superpredateurs"), core.memory("carnivores"),
+                                                        core.memory("herbivores"), core.memory("decomposeurs"))
+
+        plt.cla()
+        current_time = pygame.time.get_ticks() / 1000
+        history_time.append(current_time)
+        for key in history_data.keys():
+            history_data[key].append(dataStats[key])
+            if key == "SUPER_PREDATEUR":
+                plt.plot(history_time, history_data[key], 'red', label=key)
+            elif key == "CARNIVORE":
+                plt.plot(history_time, history_data[key], 'orange', label=key)
+            elif key == "HERBIVORE":
+                plt.plot(history_time, history_data[key], 'green', label=key)
+            elif key == "DECOMPOSITEUR":
+                plt.plot(history_time, history_data[key], 'gray', label=key)
+
+        plt.xlabel('Time (sec.)')
+        plt.ylabel('Nb. specimens')
+        plt.legend(loc="lower left")
+        plt.title("Evolution amount of specimen by time")
+        plt.draw()
+        plt.show()
+        plt.pause(0.001)
+
 
 def stopExecution():
     if time.time() - core.memory("lastTickTime") > 1:
@@ -408,6 +458,7 @@ def stopExecution():
         core.memory("lastTickTime", time.time())
     if time.time() - core.memory("timer") > float(core.memory('dureeSimu')):
         exit()
+
 
 def run():
     core.cleanScreen()
@@ -480,7 +531,6 @@ def run():
         applyDecision(agent)
 
     stopExecution()
-    # updateEnv
     updateEnv(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
               core.memory("decomposeurs"), core.memory("vegetals"))
 

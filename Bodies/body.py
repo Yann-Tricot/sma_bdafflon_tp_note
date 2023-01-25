@@ -82,7 +82,7 @@ class Body(object):
             self.velocity.scale_to_length(self.vMax)
 
         self.position += self.velocity
-        core.Draw.line((255, 255, 255), self.position, self.position + self.acceleration * 100, 2)
+        # core.Draw.line((255, 255, 255), self.position, self.position + self.acceleration * 100, 2)
 
         self.acceleration = Vector2()
         self.edge()
@@ -123,6 +123,6 @@ class Body(object):
         # TESTING PURPOSE
         # # #
         # Draw perception radius
-        core.Draw.circle(self.color, self.position, self.fustrum.radius, 1)
+        # core.Draw.circle(self.color, self.position, self.fustrum.radius, 1)
         # Draw kill zone
-        core.Draw.circle((255, 255, 255), self.position, self.mass, 1)
+        # core.Draw.circle((255, 255, 255), self.position, self.mass, 1)

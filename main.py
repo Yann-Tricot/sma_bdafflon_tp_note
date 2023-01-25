@@ -350,11 +350,11 @@ def getCurrentStats(superPredas, carnis, herbis, decompos):
                  'DECOMPOSEUR': totDecompos
                  }
 
-    totAgents = percSuperpredas + percCarnis + percHerbis + percDecompos
-    percSuperpredas = (percSuperpredas * 100) / totAgents
-    percCarnis = (percCarnis * 100) / totAgents
-    percHerbis = (percHerbis * 100) / totAgents
-    percDecompos = (percDecompos * 100) / totAgents
+    totAgents = totSuperpredas + totCarnis + totHerbis + totDecompos
+    percSuperpredas = (totSuperpredas * 100) / totAgents
+    percCarnis = (totCarnis * 100) / totAgents
+    percHerbis = (totHerbis * 100) / totAgents
+    percDecompos = (totDecompos * 100) / totAgents
 
     return dataStats, totAgents, bestSuperpreda, percSuperpredas, bestCarni, percCarnis, bestHerbi, percHerbis, \
         bestDecompo, percDecompos

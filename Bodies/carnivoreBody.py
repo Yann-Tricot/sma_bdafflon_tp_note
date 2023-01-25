@@ -1,7 +1,9 @@
-from body import Body
+import random
+
+from Bodies.body import Body
 
 
-class DecomposeurBody(Body):
+class CarnivoreBody(Body):
     def __init__(self, g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax):
         super().__init__()
 
@@ -14,4 +16,4 @@ class DecomposeurBody(Body):
         self.reproductionMax = g_reproMax
         self.esperanceVie = g_vieMax
 
-        self.color = (145, 145, 145)
+        self.color = (252, 111, 3)

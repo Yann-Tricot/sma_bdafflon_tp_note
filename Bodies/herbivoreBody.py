@@ -1,7 +1,9 @@
-from body import Body
+import random
+
+from Bodies.body import Body
 
 
-class SuperpredateurBody(Body):
+class HerbivoreBody(Body):
     def __init__(self, g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax):
         super().__init__()
 
@@ -14,4 +16,4 @@ class SuperpredateurBody(Body):
         self.reproductionMax = g_reproMax
         self.esperanceVie = g_vieMax
 
-        self.color = (252, 3, 3)
+        self.color = (102, 212, 103)

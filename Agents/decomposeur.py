@@ -1,9 +1,9 @@
 import time
 
-from agent import Agent
-from carnivoreBody import CarnivoreBody
-from herbivoreBody import HerbivoreBody
-from superpredateurBody import SuperpredateurBody
+from Agents.agent import Agent
+from Bodies.carnivoreBody import CarnivoreBody
+from Bodies.herbivoreBody import HerbivoreBody
+from Bodies.superpredateurBody import SuperpredateurBody
 from vegetal import Vegetal
 
 

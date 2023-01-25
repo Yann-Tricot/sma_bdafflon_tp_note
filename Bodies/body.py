@@ -69,7 +69,6 @@ class Body(object):
 
             if self.jaugeReproduction > self.reproductionMax and self.isDead is False and self.isSleeping is False:
                 self.isReadyToDuplicate = True
-                self.jaugeReproduction = 0
 
             self.move()
 
@@ -97,6 +96,9 @@ class Body(object):
             self.position.y = core.WINDOW_SIZE[1]
         if self.position.y > core.WINDOW_SIZE[1]:
             self.position.y = 0
+
+    def reproduction(self):
+        pass
 
     def show(self):
         # Draw body

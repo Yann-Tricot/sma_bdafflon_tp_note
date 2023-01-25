@@ -1,24 +1,25 @@
 import json
 import random
+import time
 
 import pygame
 from pygame import Vector2
 
 import core
-from carnivore import Carnivore
-from decomposeur import Decomposeur
-from herbivore import Herbivore
-from superpredateur import Superpredateur
-from carnivoreBody import CarnivoreBody
-from decomposeurBody import DecomposeurBody
-from herbivoreBody import HerbivoreBody
-from superpredateurBody import SuperpredateurBody
+from Agents.carnivore import Carnivore
+from Agents.decomposeur import Decomposeur
+from Agents.herbivore import Herbivore
+from Agents.superpredateur import Superpredateur
+from Bodies.carnivoreBody import CarnivoreBody
+from Bodies.decomposeurBody import DecomposeurBody
+from Bodies.herbivoreBody import HerbivoreBody
+from Bodies.superpredateurBody import SuperpredateurBody
 from vegetal import Vegetal
 
 
 def setup():
     print("Setup START---------")
-    core.fps = 60
+    core.fps = 30
     core.WINDOW_SIZE = [1280, 1024]
 
     # # #
@@ -27,7 +28,10 @@ def setup():
     scenarioConfigData = json.load(scenarioConfigFile)
     scenarioConfigFile.close()
 
-    dureeSimu = scenarioConfigData['dureeSimu']
+    core.memory("dureeSimu", scenarioConfigData['dureeSimu'])
+    core.memory("timer", time.time())
+    core.memory("lastTickTime", 0)
+
     suppredasData = scenarioConfigData['SuperPredateur']
     carnisData = scenarioConfigData['Carnivores']
     herbisData = scenarioConfigData['Herbivore']
@@ -54,44 +58,52 @@ def setup():
     for i in range(0, core.memory("nbSuperpredateurs")):
         core.memory("superpredateurs").append(Superpredateur(SuperpredateurBody(
             random.randint(suppredasData['parametres']['vitesseMax'][0], suppredasData['parametres']['vitesseMax'][1]),
-            random.randint(suppredasData['parametres']['accelerationMax'][0], suppredasData['parametres']['accelerationMax'][1]),
+            random.randint(suppredasData['parametres']['accelerationMax'][0],
+                           suppredasData['parametres']['accelerationMax'][1]),
             random.randint(suppredasData['parametres']['massMax'][0], suppredasData['parametres']['massMax'][1]),
             random.randint(suppredasData['parametres']['MaxFaim'][0], suppredasData['parametres']['MaxFaim'][1]),
             random.randint(suppredasData['parametres']['MaxFatigue'][0], suppredasData['parametres']['MaxFatigue'][1]),
-            random.randint(suppredasData['parametres']['MaxReproduction'][0], suppredasData['parametres']['MaxReproduction'][1]),
+            random.randint(suppredasData['parametres']['MaxReproduction'][0],
+                           suppredasData['parametres']['MaxReproduction'][1]),
             random.randint(suppredasData['parametres']['MaxVie'][0], suppredasData['parametres']['MaxVie'][1])
         )))
 
     for i in range(0, core.memory("nbCarnivores")):
         core.memory("carnivores").append(Carnivore(CarnivoreBody(
             random.randint(carnisData['parametres']['vitesseMax'][0], carnisData['parametres']['vitesseMax'][1]),
-            random.randint(carnisData['parametres']['accelerationMax'][0], carnisData['parametres']['accelerationMax'][1]),
+            random.randint(carnisData['parametres']['accelerationMax'][0],
+                           carnisData['parametres']['accelerationMax'][1]),
             random.randint(carnisData['parametres']['massMax'][0], carnisData['parametres']['massMax'][1]),
             random.randint(carnisData['parametres']['MaxFaim'][0], carnisData['parametres']['MaxFaim'][1]),
             random.randint(carnisData['parametres']['MaxFatigue'][0], carnisData['parametres']['MaxFatigue'][1]),
-            random.randint(carnisData['parametres']['MaxReproduction'][0], carnisData['parametres']['MaxReproduction'][1]),
+            random.randint(carnisData['parametres']['MaxReproduction'][0],
+                           carnisData['parametres']['MaxReproduction'][1]),
             random.randint(carnisData['parametres']['MaxVie'][0], carnisData['parametres']['MaxVie'][1])
-        )))
-
-    for i in range(0, core.memory("nbDecomposeurs")):
-        core.memory("decomposeurs").append(Decomposeur(DecomposeurBody(
-            random.randint(herbisData['parametres']['vitesseMax'][0], herbisData['parametres']['vitesseMax'][1]),
-            random.randint(herbisData['parametres']['accelerationMax'][0], herbisData['parametres']['accelerationMax'][1]),
-            random.randint(herbisData['parametres']['massMax'][0], herbisData['parametres']['massMax'][1]),
-            random.randint(herbisData['parametres']['MaxFaim'][0], herbisData['parametres']['MaxFaim'][1]),
-            random.randint(herbisData['parametres']['MaxFatigue'][0], herbisData['parametres']['MaxFatigue'][1]),
-            random.randint(herbisData['parametres']['MaxReproduction'][0], herbisData['parametres']['MaxReproduction'][1]),
-            random.randint(herbisData['parametres']['MaxVie'][0], herbisData['parametres']['MaxVie'][1])
         )))
 
     for i in range(0, core.memory("nbHerbivores")):
         core.memory("herbivores").append(Herbivore(HerbivoreBody(
+            random.randint(herbisData['parametres']['vitesseMax'][0], herbisData['parametres']['vitesseMax'][1]),
+            random.randint(herbisData['parametres']['accelerationMax'][0],
+                           herbisData['parametres']['accelerationMax'][1]),
+            random.randint(herbisData['parametres']['massMax'][0], herbisData['parametres']['massMax'][1]),
+            random.randint(herbisData['parametres']['MaxFaim'][0], herbisData['parametres']['MaxFaim'][1]),
+            random.randint(herbisData['parametres']['MaxFatigue'][0], herbisData['parametres']['MaxFatigue'][1]),
+            random.randint(herbisData['parametres']['MaxReproduction'][0],
+                           herbisData['parametres']['MaxReproduction'][1]),
+            random.randint(herbisData['parametres']['MaxVie'][0], herbisData['parametres']['MaxVie'][1])
+        )))
+
+    for i in range(0, core.memory("nbDecomposeurs")):
+        core.memory("decomposeurs").append(Decomposeur(DecomposeurBody(
             random.randint(decomposData['parametres']['vitesseMax'][0], decomposData['parametres']['vitesseMax'][1]),
-            random.randint(decomposData['parametres']['accelerationMax'][0], decomposData['parametres']['accelerationMax'][1]),
+            random.randint(decomposData['parametres']['accelerationMax'][0],
+                           decomposData['parametres']['accelerationMax'][1]),
             random.randint(decomposData['parametres']['massMax'][0], decomposData['parametres']['massMax'][1]),
             random.randint(decomposData['parametres']['MaxFaim'][0], decomposData['parametres']['MaxFaim'][1]),
             random.randint(decomposData['parametres']['MaxFatigue'][0], decomposData['parametres']['MaxFatigue'][1]),
-            random.randint(decomposData['parametres']['MaxReproduction'][0], decomposData['parametres']['MaxReproduction'][1]),
+            random.randint(decomposData['parametres']['MaxReproduction'][0],
+                           decomposData['parametres']['MaxReproduction'][1]),
             random.randint(decomposData['parametres']['MaxVie'][0], decomposData['parametres']['MaxVie'][1])
         )))
 
@@ -99,6 +111,8 @@ def setup():
         core.memory("vegetals").append(Vegetal(random.randint(vegetalsData['parametres']['massMax'][0],
                                                               vegetalsData['parametres']['massMax'][1])))
 
+    # plotThread = threading.Thread(target=drawEvolution, args=())
+    # plotThread.start()
     print("Setup END-----------")
 
 
@@ -137,103 +151,109 @@ def applyDecision(agent):
     agent.body.update()
 
 
-def checkNaissances(superPredas, carnis, herbis, decompos):
-    for superPreda in superPredas:
-        if superPreda.body.isReadyToDuplicate is True:
-            newBorn = Superpredateur(SuperpredateurBody())
-            # newBorn.body.position = superPreda.body.position
-            # newBorn.body.vMax = random.randint(3, 6)
-            # newBorn.body.mass = random.randint(6, 9)
-            newBorn.body.faimMax = random.randint(20, 30)
-            newBorn.body.fatigueMax = random.randint(25, 35)
-            newBorn.body.reproductionMax = random.randint(40, 50)
-
-            core.memory("superpredateurs").append(newBorn)
-            superPreda.body.isReadyToDuplicate = False
-            superPreda.body.jaugeReproduction = 0
-
-    for carni in carnis:
-        if carni.body.isReadyToDuplicate is True:
-            newBorn = Carnivore(CarnivoreBody())
-            # newBorn.body.position = carni.body.position
-            # newBorn.body.vMax = random.randint(3, 5)
-            # newBorn.body.mass = random.randint(6, 8)
-            newBorn.body.faimMax = random.randint(15, 25)
-            newBorn.body.fatigueMax = random.randint(20, 30)
-            newBorn.body.reproductionMax = random.randint(35, 45)
-
-            core.memory("carnivores").append(newBorn)
-            carni.body.isReadyToDuplicate = False
-            carni.body.jaugeReproduction = 0
-
-    for herbi in herbis:
-        if herbi.body.isReadyToDuplicate is True:
-            newBorn = Herbivore(HerbivoreBody())
-            # newBorn.body.position = herbi.body.position
-            # newBorn.body.vMax = random.randint(3, 6)
-            # newBorn.body.mass = random.randint(5, 7)
-            newBorn.body.faimMax = random.randint(5, 10)
-            newBorn.body.fatigueMax = random.randint(10, 15)
-            newBorn.body.reproductionMax = random.randint(5, 10)
-
-            core.memory("herbivores").append(newBorn)
-            herbi.body.isReadyToDuplicate = False
-            herbi.body.jaugeReproduction = 0
-
-    for decompo in decompos:
-        if decompo.body.isReadyToDuplicate is True:
-            newBorn = Decomposeur(DecomposeurBody())
-            newBorn.body.position = decompo.body.position
-            # newBorn.body.vMax = random.randint(4, 6)
-            # newBorn.body.mass = random.randint(3, 5)
-            newBorn.body.faimMax = random.randint(8, 10)
-            newBorn.body.fatigueMax = random.randint(10, 15)
-            newBorn.body.reproductionMax = random.randint(2, 4)
-
-            core.memory("decomposeurs").append(newBorn)
-            decompo.body.isReadyToDuplicate = False
-            decompo.body.jaugeReproduction = 0
-
-
 def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
     for superPreda in superPredas:
         if superPreda.body.isDead is True:
             if superPreda.body.isAte is True:
                 if superPreda.body.becomesVegetal is True:
-                    # newVegetal = Vegetal()
-                    # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
-                    core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
+                    newVegetal = Vegetal(random.randint(2, 5))
+                    core.memory("vegetals").append(newVegetal)
                 core.memory("superpredateurs").remove(superPreda)
         else:
             # BIRTHS CHECK
             if superPreda.body.isReadyToDuplicate is True:
-                pass
+                superPreda.body.reproduction()
 
     for carni in carnis:
         if carni.body.isDead is True:
             if carni.body.isAte is True:
                 if carni.body.becomesVegetal is True:
-                    # newVegetal = Vegetal()
-                    # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
+                    newVegetal = Vegetal(random.randint(2, 5))
                     core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
                 core.memory("carnivores").remove(carni)
         else:
             # BIRTHS CHECK
             if carni.body.isReadyToDuplicate is True:
-                pass
+                g_vMax = carni.body.vMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_vMax <= 0:
+                    g_vMax = carni.body.vMax
+
+                g_accMax = carni.body.accMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_accMax <= 0:
+                    g_accMax = carni.body.accMax
+
+                g_mass = carni.body.mass + random.randint(0, 2) - random.randint(0, 2)
+                if g_mass <= 0:
+                    g_mass = carni.body.mass
+
+                g_faimMax = carni.body.faimMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_faimMax <= 0:
+                    g_faimMax = carni.body.faimMax
+
+                g_fatigueMax = carni.body.fatigueMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_fatigueMax <= 0:
+                    g_fatigueMax = carni.body.fatigueMax
+
+                g_reproMax = carni.body.reproductionMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_reproMax <= 0:
+                    g_reproMax = carni.body.reproductionMax
+
+                g_vieMax = carni.body.esperanceVie + random.randint(0, 2) - random.randint(0, 2)
+                if g_vieMax <= 0:
+                    g_vieMax = carni.body.esperanceVie
+
+                newBorn = Carnivore(CarnivoreBody(g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax))
+                newBorn.body.position = carni.body.position + Vector2(random.randint(-1, 1), random.randint(-1, 1))
+
+                core.memory('carnivores').append(newBorn)
+                carni.body.jaugeReproduction = carni.body.reproductionMin
+                carni.body.isReadyToDuplicate = False
 
     for herbi in herbis:
         if herbi.body.isDead is True:
             if herbi.body.isAte is True:
                 if herbi.body.becomesVegetal is True:
-                    # newVegetal = Vegetal()
-                    # newVegetal.position = Vector2(superPreda.body.position.x, superPreda.body.position.y)
-                    core.memory("vegetals").append(Vegetal(random.randint(2, 5)))
+                    newVegetal = Vegetal(random.randint(2, 5))
+                    core.memory("vegetals").append(newVegetal)
                 core.memory("herbivores").remove(herbi)
         else:
             # BIRTHS CHECK
             if herbi.body.isReadyToDuplicate is True:
-                pass
+                g_vMax = herbi.body.vMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_vMax <= 0:
+                    g_vMax = herbi.body.vMax
+
+                g_accMax = herbi.body.accMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_accMax <= 0:
+                    g_accMax = herbi.body.accMax
+
+                g_mass = herbi.body.mass + random.randint(0, 2) - random.randint(0, 2)
+                if g_mass <= 0:
+                    g_mass = herbi.body.mass
+
+                g_faimMax = herbi.body.faimMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_faimMax <= 0:
+                    g_faimMax = herbi.body.faimMax
+
+                g_fatigueMax = herbi.body.fatigueMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_fatigueMax <= 0:
+                    g_fatigueMax = herbi.body.fatigueMax
+
+                g_reproMax = herbi.body.reproductionMax + random.randint(0, 2) - random.randint(0, 2)
+                if g_reproMax <= 0:
+                    g_reproMax = herbi.body.reproductionMax
+
+                g_vieMax = herbi.body.esperanceVie + random.randint(0, 2) - random.randint(0, 2)
+                if g_vieMax <= 0:
+                    g_vieMax = herbi.body.esperanceVie
+
+                newBorn = Herbivore(
+                    HerbivoreBody(g_vMax, g_accMax, g_mass, g_faimMax, g_fatigueMax, g_reproMax, g_vieMax))
+                newBorn.body.position = herbi.body.position + Vector2(random.randint(-1, 1), random.randint(-1, 1))
+
+                core.memory('herbivores').append(newBorn)
+                herbi.body.jaugeReproduction = herbi.body.reproductionMin
+                herbi.body.isReadyToDuplicate = False
 
     for decompo in decompos:
         if decompo.body.isDead is True:
@@ -242,7 +262,7 @@ def updateEnv(superPredas, carnis, herbis, decompos, vegetals):
         else:
             # BIRTHS CHECK
             if decompo.body.isReadyToDuplicate is True:
-                pass
+                decompo.body.reproduction()
 
     for vegetal in vegetals:
         if vegetal.isAte is True:
@@ -379,12 +399,22 @@ def showStatsLog(superPredas, carnis, herbis, decompos):
     print('- - - - - - - - - - -')
 
 
+history_data = {"Herbivores": [], "Vegetaux": [], "Carnivores": [], "SuperPredateurs": [], "Decomposeurs": [],
+                'Morts': []}
+
+def stopExecution():
+    if time.time() - core.memory("lastTickTime") > 1:
+        print('Session duration: ' + str(int(time.time() - core.memory("timer"))) + '/' + str(core.memory('dureeSimu')))
+        core.memory("lastTickTime", time.time())
+    if time.time() - core.memory("timer") > float(core.memory('dureeSimu')):
+        exit()
+
 def run():
     core.cleanScreen()
 
     if core.getKeyPressList("s"):
         showStatsLog(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
-                          core.memory("decomposeurs"))
+                     core.memory("decomposeurs"))
 
     if core.getKeyPressList("ESCAPE"):
         pygame.quit()
@@ -449,6 +479,7 @@ def run():
     for agent in core.memory("herbivores"):
         applyDecision(agent)
 
+    stopExecution()
     # updateEnv
     updateEnv(core.memory("superpredateurs"), core.memory("carnivores"), core.memory("herbivores"),
               core.memory("decomposeurs"), core.memory("vegetals"))
